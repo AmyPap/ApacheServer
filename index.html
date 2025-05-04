@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Bouncing Username</title>
+<style>
+  /* ---- Full‑screen animated gradient ---- */
+  html, body {
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+    background: linear-gradient(135deg,#ff6b6b,#f8e71c,#50e3c2,#7ed321,#4a90e2);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+  }
+  @keyframes gradientShift {
+    0%   {background-position:  0% 50%;}
+    50%  {background-position:100% 50%;}
+    100% {background-position:  0% 50%;}
+  }
+
+  /* ---- Bouncing label ---- */
+  #username{
+    position:fixed;      /* viewport‑relative */
+    font-size:3rem;
+    font-weight:700;
+    color:#fff;
+    text-shadow:0 0 10px rgba(0,0,0,.5);
+    pointer-events:none;
+    user-select:none;
+    left:0;top:0;        /* JS will update these continuously */
+  }
+</style>
+</head>
+<body>
+
+<div id="username">Username</div>
+
+<script>
+(() => {
+  const el       = document.getElementById('username');
+  const speed    = 300;                // pixels per second
+  let x = 0, y = 0, dx = 1, dy = 1;    // will randomize below
+  const randDir = () => Math.random() < .5 ? -1 : 1;
+
+  // Place at a random start *after* fonts render
+  const init = () => {
+    const {offsetWidth:w, offsetHeight:h} = el;
+    x  = Math.random() * (innerWidth  - w);
+    y  = Math.random() * (innerHeight - h);
+    dx = randDir();
+    dy = randDir();
+  };
+  addEventListener('load', init);
+  addEventListener('resize', () => {         // keep inside after resize
+    const {offsetWidth:w, offsetHeight:h} = el;
+    x = Math.min(Math.max(x,0), innerWidth  - w);
+    y = Math.min(Math.max(y,0), innerHeight - h);
+  });
+
+  let prev = performance.now();
+  function step(now){
+    const dt = (now - prev) / 1000; prev = now;
+
+    // text size may change (e.g. delayed font); read every frame
+    const w = el.offsetWidth, h = el.offsetHeight;
+
+    x += dx * speed * dt;
+    y += dy * speed * dt;
+
+    /* Edge collisions */
+    if (x <= 0)                {x = 0;                    dx = 1;}
+    if (x + w >= innerWidth)   {x = innerWidth  - w;      dx = -1;}
+    if (y <= 0)                {y = 0;                    dy = 1;}
+    if (y + h >= innerHeight)  {y = innerHeight - h;      dy = -1;}
+
+    el.style.left = x + 'px';
+    el.style.top  = y + 'px';
+
+    requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+})();
+</script>
+</body>
+</html>
