@@ -67,7 +67,7 @@ sudo nano /var/www/html/index.html
 ```
 Jag sparade ändringarna och gick tillbaka till Ubuntu Desktop. Där öppnade jag webbläsaren igen och skrev in samma IP-adress som tidigare för att se den uppdaterade webbsidan.
 
-![Apache-screenshot](apache.png)
+![Apache-screenshot](docs/apache.png)
 
 # Wordpress - Bonusdel
 
@@ -205,4 +205,4 @@ Till sist gick jag till Ubuntu Desktop och öppnade webbläsaren. Jag skrev in s
 
 WordPress installationssida visades. Jag fyllde i information och skapade ett inlägg med mitt GitHub-användarnamn AmyPap.
 
-![wordpress-screenshot](wordpress.png)
+![wordpress-screenshot](docs/wordpress.png)
